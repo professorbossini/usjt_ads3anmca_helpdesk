@@ -13,6 +13,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class ListaChamadosActivity extends AppCompatActivity {
@@ -25,8 +26,8 @@ public class ListaChamadosActivity extends AppCompatActivity {
         chamadosListView = findViewById(R.id.chamadosListView);
         Intent origemIntent = getIntent();
         String nomeFila = origemIntent.getStringExtra("nomeFila");
-        List <String> chamados = busca (nomeFila);
-        ArrayAdapter <String> adapter =
+        List <Chamado> chamados = busca (nomeFila);
+        ArrayAdapter <Chamado> adapter =
                 new ArrayAdapter<>(
                             this,
                             android.R.layout.simple_list_item_1,
@@ -44,7 +45,7 @@ public class ListaChamadosActivity extends AppCompatActivity {
                 (adapterView, view, position, id) ->{
             Intent intent =
                     new Intent (this, DetalhesChamadoActivity.class);
-            String chamado = chamados.get(position);
+            Chamado chamado = chamados.get(position);
             intent.putExtra("chamado_selecionado", chamado);
             startActivity(intent);
         });
@@ -52,20 +53,99 @@ public class ListaChamadosActivity extends AppCompatActivity {
 
     }
 
-    public List <String> busca (String nomeFila){
-        List <String> chamados = geraListaChamados();
+    public List <Chamado> busca (String nomeFila){
+        List <Chamado> chamados = geraListaChamados();
         if (nomeFila == null || nomeFila.isEmpty())
             return chamados;
-        List <String> subLista = new ArrayList<>();
-        for (String chamado: chamados){
-           if (chamado.toLowerCase().contains(nomeFila.toLowerCase()))
+        List <Chamado> subLista = new ArrayList<>();
+        for (Chamado chamado: chamados){
+           if (chamado.getFila().getNome().toLowerCase().contains(nomeFila.toLowerCase()))
                subLista.add(chamado);
         }
         return subLista;
     }
 
+    public List <Chamado> geraListaChamados (){
+        List <Chamado> chamados = new ArrayList<>();
+        chamados.add(
+                new Chamado (
+                        new Fila (
+                                "Desktops",
+                                R.drawable.ic_computer_black_24dp
+                        ),
+                        "Computador da secretária quebrado",
+                        new Date(),
+                        null,
+                        "Aberto"
+                )
+        );
+        chamados.add(new Chamado (
+                new Fila ("Telefonia",
+                        R.drawable.ic_phone_in_talk_black_24dp),
+                "Telefone não funciona.",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Redes",
+                        R.drawable.ic_network_check_black_24dp),
+                "Manutenção no proxy.",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Servidores", R.drawable.ic_poll_black_24dp),
+                "Lentidão generalizada.",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Novos Projetos",
+                        R.drawable.ic_new_releases_black_24dp),
+                "CRM",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Novos Projetos",
+                        R.drawable.ic_new_releases_black_24dp),
+                "Gestão de Orçamento",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Redes",
+                        R.drawable.ic_network_check_black_24dp),
+                "Internet com lentidão",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Novos Projetos",
+                        R.drawable.ic_new_releases_black_24dp),
+                "Chatbot",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        chamados.add(new Chamado (
+                new Fila ("Novos Projetos",
+                        R.drawable.ic_new_releases_black_24dp),
+                "Chatbot",
+                new Date(),
+                null,
+                "Aberto")
+        );
+        return chamados;
+    }
 
-    public List<String> geraListaChamados(){
+    /*public List<String> geraListaChamados(){
         ArrayList<String> lista = new ArrayList<>();
         lista.add("Desktops: Computador da secretária quebrado.");
         lista.add("Telefonia: Telefone não funciona.");
@@ -88,5 +168,5 @@ public class ListaChamadosActivity extends AppCompatActivity {
         lista.add("Redes: ponto com defeito");
         lista.add("Novos Projetos: ferramenta EMM");
         return lista;
-    }
+    }*/
 }
